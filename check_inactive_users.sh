@@ -9,7 +9,6 @@ fi
 
 # Initialize an empty list to store the final users
 final_users=""
-> final_users.list
 
 # Loop through each user in the "collaborators" group
 while read -r username lastactivity; do
