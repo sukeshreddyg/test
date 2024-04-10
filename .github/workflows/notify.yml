@@ -28,7 +28,6 @@ jobs:
       - name: Get Inactive Collaborator Users
         run: |
           bash ./check_inactive_users.sh
-          ls -l final_users.list
           if [ -f final_users.list ]; then
             echo "hi"
             cat final_users.list
