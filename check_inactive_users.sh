@@ -46,4 +46,7 @@ while read -r username lastactivity; do
 done <<< "$users"
 echo "Printing final_users: $final_users"
 # Output the final list of users
-echo "$final_users" | xargs -n 1 >> final_users.list
+if [ -n "$final_users" ]; then
+  # Output the final list of users and create final_users.list
+  echo "$final_users" | xargs -n 1 > final_users.list
+fi
