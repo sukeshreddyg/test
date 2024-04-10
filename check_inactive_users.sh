@@ -29,7 +29,7 @@ while read -r username lastactivity; do
     for access_key_id in $access_keys; do
       # Get the last used information for the access key
       last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
-      if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $thresold days" +%s)" ]; then
+      if [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $thresold days" +%s)" ]; then
         # If any access key was used within the last $thresold days, user does not meet the criteria
         meets_criteria=0
         break
