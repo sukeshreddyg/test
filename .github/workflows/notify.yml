@@ -1,0 +1,40 @@
+name: Notify IAM Collaborators
+
+on:
+  workflow_dispatch: 
+
+env:
+    AWS_REGION: "eu-west-2"
+    ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+
+permissions:
+    id-token: write # This is required for requesting the JWT
+    contents: read # This is required for actions/checkout
+    issues: write # This is required to create issues
+jobs:
+  notify-inactive-collaborators:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/test-secret"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get Inactive Collaborator Users
+        run: |
+          bash ./check_inactive_users.sh
+          if [ -s final_users.list ]; then
+            echo "hi"
+            cat final_users.list
+          else
+            echo "Bye"
+          fi
+
+        env:
+          thresold: 0
+          SKIP_DISABLED_CONSOLE_USERS: true
