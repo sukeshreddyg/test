@@ -28,14 +28,21 @@ jobs:
       - name: Get Inactive Collaborator Users
         run: |
           bash ./check_inactive_users.sh
-          while read username; do
-            if aws iam get-login-profile --user-name "$username" &> /dev/null; then
-              aws iam delete-login-profile --user-name "$username"
-            fi
-            access_keys=$(aws iam list-access-keys --user-name $username --query "AccessKeyMetadata[].AccessKeyId" --output text 2>/dev/null | xargs -n 1)
-            while read -r key; do
-              aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
-            done <<< "$access_keys"
-          done <<< "$(cat final_users.list)"
         env:
-          thresold: 200
+          thresold: 0
+
+      - name: disable console login
+        run: | 
+          if [ -f final_users.list ]; then
+            while read username; do
+              if aws iam get-login-profile --user-name "$username" &> /dev/null; then
+                aws iam delete-login-profile --user-name "$username"
+              fi
+              access_keys=$(aws iam list-access-keys --user-name $username --query "AccessKeyMetadata[].AccessKeyId" --output text 2>/dev/null | xargs -n 1)
+              while read -r key; do
+                aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
+              done <<< "$access_keys"
+            done <<< "$(cat final_users.list)"
+          else
+            echo "There are no inactive users"
+          fi
