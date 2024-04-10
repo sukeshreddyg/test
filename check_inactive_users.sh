@@ -18,7 +18,7 @@ while read -r username lastactivity; do
     fi
   fi
   # Check if last console login activity is more than or equal to $thresold days or is "None"
-  if [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $thresold days" +%s)" ]; then
+  if [ "$lastactivity" == "None" ] || [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $thresold days" +%s)" ]; then
     # Get information about the access keys for the current user
     access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
     
@@ -37,7 +37,7 @@ while read -r username lastactivity; do
     done
     
     # If user meets the criteria, add them to the final list
-    if [ "$meets_criteria" -eq 1 ]; then
+    if [ "$last_used" != "None" ] && [ "$meets_criteria" -eq 1 ]; then
       final_users+=" $username"
     fi
   fi
