@@ -34,6 +34,7 @@ jobs:
       - name: disable console login
         run: | 
           if [ -f final_users.list ]; then
+            echo "Hi"
             while read username; do
               if aws iam get-login-profile --user-name "$username" &> /dev/null; then
                 aws iam delete-login-profile --user-name "$username"
