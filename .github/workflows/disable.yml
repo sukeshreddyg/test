@@ -42,6 +42,7 @@ jobs:
               while read -r key; do
                 aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
               done <<< "$access_keys"
+              echo "Disable login for $username"
             done <<< "$(cat final_users.list)"
           else
             echo "There are no inactive users"
