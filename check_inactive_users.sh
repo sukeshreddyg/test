@@ -18,7 +18,7 @@ while read -r username lastactivity; do
     fi
   fi
   # Check if last console login activity is more than or equal to $thresold days or is "None"
-  if [ "$lastactivity" == "None" ] || [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $thresold days" +%s)" ]; then
+  if [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $thresold days" +%s)" ]; then
     # Get information about the access keys for the current user
     access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
     
