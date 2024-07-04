@@ -7,7 +7,8 @@ ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
 # Get the current month and year
 current_year=$(date +%Y)
-current_month=$(date +%m)
+#current_month=$(date +%m)
+current_month=06
 previous_month_name=$(date -d "${current_month}/01 -1 month" +%B)
 previous_month_year="$previous_month_name $current_year"
 
