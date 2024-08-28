@@ -1,0 +1,57 @@
+name: "Provide Slack Webhook Information"
+description: "Submit Slack webhook URL and related information for environment JSON file change notifications."
+title: "[Provide Slack Webhook Information] Request for <Your Slack Channel Name>"
+labels: ["slack", "webhook", "information"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Provide Slack Webhook Information
+
+        To set up notifications for changes in your `environments.json` file, please provide the following details about your Slack webhook URL stored in your AWS account.
+
+  - type: input
+    id: slack_channel_name
+    attributes:
+      label: "Slack Channel Name"
+      description: "Enter the name of the Slack channel where you want to receive notifications."
+      placeholder: "e.g., #development-alerts"
+    validations:
+      required: true
+
+  - type: input
+    id: aws_account_name
+    attributes:
+      label: "AWS Account Name"
+      description: "Enter the name of the AWS account where the webhook URL secret is stored."
+      placeholder: "e.g., dev-account-123"
+    validations:
+      required: true
+
+  - type: input
+    id: secret_name
+    attributes:
+      label: "Secret Name"
+      description: "Enter the name of the secret in AWS Secrets Manager where the Slack webhook URL is stored."
+      placeholder: "e.g., slack_webhook_url"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: "Additional Information"
+      description: "Provide any additional details or context that may be relevant to this request."
+      placeholder: "e.g., Specific instructions or preferences..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: "Confirmation"
+      description: "Please confirm that the provided information is accurate and that you have securely stored the Slack webhook URL in your AWS account."
+      options:
+        - label: "I confirm that the above information is accurate and the Slack webhook URL is securely stored."
+          required: true
