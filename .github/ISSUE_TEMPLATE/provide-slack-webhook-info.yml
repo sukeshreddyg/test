@@ -1,7 +1,7 @@
 name: "Provide Slack Webhook Information"
 description: "Submit Slack webhook URL and related information for environment JSON file change notifications."
 title: "Request to Integrate Slack Webhook for <Your Slack Channel Name>"
-labels: ["slack", "webhook", "information"]
+labels: ["alerting"]
 
 body:
   - type: markdown
@@ -16,7 +16,7 @@ body:
     attributes:
       label: "Slack Channel Name"
       description: "Enter the name of the Slack channel where you want to receive notifications."
-      placeholder: "e.g., #development-alerts"
+      placeholder: "e.g., modernisation-platform"
     validations:
       required: true
 
@@ -25,7 +25,7 @@ body:
     attributes:
       label: "AWS Account Name"
       description: "Enter the name of the AWS account where the webhook URL secret is stored."
-      placeholder: "e.g., dev-account-123"
+      placeholder: "e.g., sprinkler-development"
     validations:
       required: true
 
@@ -46,12 +46,3 @@ body:
       placeholder: "e.g., Specific instructions or preferences..."
     validations:
       required: false
-
-  - type: checkboxes
-    id: agreement
-    attributes:
-      label: "Confirmation"
-      description: "Please confirm that the provided information is accurate and that you have securely stored the Slack webhook URL in your AWS account."
-      options:
-        - label: "I confirm that the above information is accurate and the Slack webhook URL is securely stored."
-          required: true
