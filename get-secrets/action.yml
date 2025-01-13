@@ -6,7 +6,7 @@ inputs:
   PASSPHRASE:
     description: secret to encrypt
     required: true
-  
+
 outputs:
   environment_management:
     description: Encrypted environment management secret
@@ -18,15 +18,16 @@ outputs:
     description: Encrypted Slack webhook URL
   github_ci_user_pat:
     description: Encrypted GitHub CI User PAT
+
 runs:
   using: "composite"
   steps:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: "arn:aws:iam::${{ inputs.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/test-default-vpc" # Reference GitHub Secret
+        role-to-assume: "arn:aws:iam::${{ inputs.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/test-default-vpc"
         role-session-name: githubactionsrolesession
-        aws-region: "eu-west-2" # Replace with your region
+        aws-region: "eu-west-2"
 
     - name: Retrieve Secrets from AWS Secrets Manager
       uses: aws-actions/aws-secretsmanager-get-secrets@v2
@@ -43,17 +44,24 @@ runs:
       shell: bash
       run: |
         environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
-        echo "::set-output name=environment_management::$environment_management"
+        echo "environment_management=$environment_management" >> $GITHUB_ENV
 
         pagerduty_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_TOKEN") | base64 -w0)
-        echo "::set-output name=pagerduty_token::$pagerduty_token"
+        echo "pagerduty_token=$pagerduty_token" >> $GITHUB_ENV
 
         pagerduty_userapi_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_USERAPI_TOKEN") | base64 -w0)
-        echo "::set-output name=pagerduty_userapi_token::$pagerduty_userapi_token"
+        echo "pagerduty_userapi_token=$pagerduty_userapi_token" >> $GITHUB_ENV
 
         slack_webhook_url=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$SLACK_WEBHOOK_URL") | base64 -w0)
-        echo "::set-output name=slack_webhook_url::$slack_webhook_url"
+        echo "slack_webhook_url=$slack_webhook_url" >> $GITHUB_ENV
 
         github_ci_user_pat=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$TERRAFORM_GITHUB_TOKEN") | base64 -w0)
-        echo "::set-output name=github_ci_user_pat::$github_ci_user_pat"
+        echo "github_ci_user_pat=$github_ci_user_pat" >> $GITHUB_ENV
 
+    - name: Set Outputs
+      run: |
+        echo "environment_management=${{ env.environment_management }}" >> $GITHUB_ENV
+        echo "pagerduty_token=${{ env.pagerduty_token }}" >> $GITHUB_ENV
+        echo "pagerduty_userapi_token=${{ env.pagerduty_userapi_token }}" >> $GITHUB_ENV
+        echo "slack_webhook_url=${{ env.slack_webhook_url }}" >> $GITHUB_ENV
+        echo "github_ci_user_pat=${{ env.github_ci_user_pat }}" >> $GITHUB_ENV
