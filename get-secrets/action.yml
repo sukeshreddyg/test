@@ -20,7 +20,6 @@ outputs:
     description: Encrypted GitHub CI User PAT
 runs:
   using: "composite"
-  shell: bash
   steps:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
@@ -41,6 +40,7 @@ runs:
 
     - name: Encrypt and Set Outputs
       id: encrypt-outputs
+      shell: bash
       run: |
         environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
         echo "::set-output name=environment_management::$environment_management"
