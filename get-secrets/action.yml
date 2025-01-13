@@ -59,6 +59,7 @@ runs:
         echo "github_ci_user_pat=$github_ci_user_pat" >> $GITHUB_ENV
 
     - name: Set Outputs
+      shell: bash
       run: |
         echo "environment_management=${{ env.environment_management }}" >> $GITHUB_ENV
         echo "pagerduty_token=${{ env.pagerduty_token }}" >> $GITHUB_ENV
