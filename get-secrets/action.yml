@@ -24,7 +24,7 @@ runs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: "arn:aws:iam::${{ inputs.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/github-actions" # Reference GitHub Secret
+        role-to-assume: "arn:aws:iam::${{ inputs.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/test-default-vpc" # Reference GitHub Secret
         role-session-name: githubactionsrolesession
         aws-region: "eu-west-2" # Replace with your region
 
