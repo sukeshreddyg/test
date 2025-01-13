@@ -44,25 +44,16 @@ runs:
       shell: bash
       run: |
         environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
-        echo "environment_management=$environment_management" >> $GITHUB_ENV
+        echo "environment_management=$environment_management" >> $GITHUB_OUTPUT
 
         pagerduty_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_TOKEN") | base64 -w0)
-        echo "pagerduty_token=$pagerduty_token" >> $GITHUB_ENV
+        echo "pagerduty_token=$pagerduty_token" >> $GITHUB_OUTPUT
 
         pagerduty_userapi_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_USERAPI_TOKEN") | base64 -w0)
-        echo "pagerduty_userapi_token=$pagerduty_userapi_token" >> $GITHUB_ENV
+        echo "pagerduty_userapi_token=$pagerduty_userapi_token" >> $GITHUB_OUTPUT
 
         slack_webhook_url=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$SLACK_WEBHOOK_URL") | base64 -w0)
-        echo "slack_webhook_url=$slack_webhook_url" >> $GITHUB_ENV
+        echo "slack_webhook_url=$slack_webhook_url" >> $GITHUB_OUTPUT
 
         github_ci_user_pat=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$TERRAFORM_GITHUB_TOKEN") | base64 -w0)
-        echo "github_ci_user_pat=$github_ci_user_pat" >> $GITHUB_ENV
-
-    - name: Set Outputs
-      shell: bash
-      run: |
-        echo "environment_management=${{ env.environment_management }}" >> $GITHUB_ENV
-        echo "pagerduty_token=${{ env.pagerduty_token }}" >> $GITHUB_ENV
-        echo "pagerduty_userapi_token=${{ env.pagerduty_userapi_token }}" >> $GITHUB_ENV
-        echo "slack_webhook_url=${{ env.slack_webhook_url }}" >> $GITHUB_ENV
-        echo "github_ci_user_pat=${{ env.github_ci_user_pat }}" >> $GITHUB_ENV
+        echo "github_ci_user_pat=$github_ci_user_pat" >> $GITHUB_OUTPUT
