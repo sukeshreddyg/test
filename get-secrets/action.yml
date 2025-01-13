@@ -1,4 +1,12 @@
 name: Retrieve and Encrypt AWS Secrets
+inputs:
+  MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
+    description: MP Account Number
+    required: true
+  PASSPHRASE:
+    description: passphrase
+    required: true
+  
 outputs:
   environment_management:
     description: Encrypted environment management secret
@@ -16,7 +24,7 @@ runs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: "arn:aws:iam::${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/github-actions" # Reference GitHub Secret
+        role-to-assume: "arn:aws:iam::${{ inputs.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/github-actions" # Reference GitHub Secret
         role-session-name: githubactionsrolesession
         aws-region: "eu-west-2" # Replace with your region
 
@@ -33,18 +41,18 @@ runs:
     - name: Encrypt and Set Outputs
       id: encrypt-outputs
       run: |
-        environment_management=$(gpg --symmetric --batch --passphrase "${{ secrets.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
+        environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
         echo "::set-output name=environment_management::$environment_management"
 
-        pagerduty_token=$(gpg --symmetric --batch --passphrase "${{ secrets.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_TOKEN") | base64 -w0)
+        pagerduty_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_TOKEN") | base64 -w0)
         echo "::set-output name=pagerduty_token::$pagerduty_token"
 
-        pagerduty_userapi_token=$(gpg --symmetric --batch --passphrase "${{ secrets.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_USERAPI_TOKEN") | base64 -w0)
+        pagerduty_userapi_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_USERAPI_TOKEN") | base64 -w0)
         echo "::set-output name=pagerduty_userapi_token::$pagerduty_userapi_token"
 
-        slack_webhook_url=$(gpg --symmetric --batch --passphrase "${{ secrets.PASSPHRASE }}" --output - <(echo "$SLACK_WEBHOOK_URL") | base64 -w0)
+        slack_webhook_url=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$SLACK_WEBHOOK_URL") | base64 -w0)
         echo "::set-output name=slack_webhook_url::$slack_webhook_url"
 
-        github_ci_user_pat=$(gpg --symmetric --batch --passphrase "${{ secrets.PASSPHRASE }}" --output - <(echo "$TERRAFORM_GITHUB_TOKEN") | base64 -w0)
+        github_ci_user_pat=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$TERRAFORM_GITHUB_TOKEN") | base64 -w0)
         echo "::set-output name=github_ci_user_pat::$github_ci_user_pat"
 
