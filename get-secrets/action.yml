@@ -4,7 +4,7 @@ inputs:
     description: MP Account Number
     required: true
   PASSPHRASE:
-    description: passphrase
+    description: secret to encrypt
     required: true
   
 outputs:
