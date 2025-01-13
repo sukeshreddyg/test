@@ -43,7 +43,7 @@ runs:
       id: encrypt-outputs
       shell: bash
       run: |
-        environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PLATFORM_ENVIRONMENTS") | base64 -w0)
+        environment_management=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$MODERNISATION_PLATFORM_ENVIRONMENTS") | base64 -w0)
         echo "environment_management=$environment_management" >> $GITHUB_OUTPUT
 
         pagerduty_token=$(gpg --symmetric --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "$PAGERDUTY_TOKEN") | base64 -w0)
