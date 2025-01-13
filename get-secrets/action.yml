@@ -20,6 +20,7 @@ outputs:
     description: Encrypted GitHub CI User PAT
 runs:
   using: "composite"
+  shell: bash
   steps:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
