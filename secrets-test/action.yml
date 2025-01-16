@@ -25,7 +25,7 @@ runs:
         if [ -n "${{ inputs.ENVIRONMENT_MANAGEMENT }}" ]; then
         ENVIRONMENT_MANAGEMENT_DECRYPT=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.PASSPHRASE }}" --output - <(echo "${{ inputs.ENVIRONMENT_MANAGEMENT }}" | base64 --decode))
         echo "::add-mask::$ENVIRONMENT_MANAGEMENT_DECRYPT"
-        echo "ENVIRONMENT_MANAGEMENT=$environment_management_decrypt" >> $GITHUB_ENV
+        echo "ENVIRONMENT_MANAGEMENT=$ENVIRONMENT_MANAGEMENT_DECRYPT" >> $GITHUB_ENV
         fi
         
         if [ -n "${{ inputs.pagerduty_token }}" ]; then
