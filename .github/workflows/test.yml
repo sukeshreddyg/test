@@ -9,7 +9,7 @@ jobs:
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         - name: test
           run: |
-            git_dir=`git rev-parse --show-toplevel`
+            git_dir="$( git rev-parse --show-toplevel )"
             echo ${git_dir}
             if [ ! -z ${{ github.event.pull_request.number }} ]
             then
