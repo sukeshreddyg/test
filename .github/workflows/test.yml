@@ -10,7 +10,8 @@ jobs:
         - name: test
           run: |
             git_dir="$( git rev-parse --show-toplevel )"
-            echo ${git_dir}
+            echo "display dir: ${git_dir}"
+            ls -l ${git_dir}
             if [ ! -z ${{ github.event.pull_request.number }} ]
             then
             echo "Hi, How are you ?"
