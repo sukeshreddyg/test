@@ -1,0 +1,18 @@
+name: test
+on: 
+  workflow_dispatch:
+jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        - name: test
+          run: |
+            git_dir="$( git rev-parse --show-toplevel )"
+            echo "display dir: ${git_dir}"
+            ls -l ${git_dir}
+            if [ ! -z ${{ github.event.pull_request.number }} ]
+            then
+            echo "Hi, How are you ?"
+            fi
