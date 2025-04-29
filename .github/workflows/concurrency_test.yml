@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency: 
-  group: test-${{ github.ref }}-${{ github.run_id }}
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
