@@ -10,8 +10,8 @@ permissions:
   id-token: write
   contents: read
 
-concurrency:
-  group: test
+concurrency: 
+  group: test-${{ github.ref }}-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
