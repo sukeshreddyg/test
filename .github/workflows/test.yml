@@ -8,11 +8,11 @@ jobs:
         - name: Checkout Repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         - name: test
+          id: plan
           run: |
-            git_dir="$( git rev-parse --show-toplevel )"
-            echo "display dir: ${git_dir}"
-            ls -l ${git_dir}
-            if [ ! -z ${{ github.event.pull_request.number }} ]
-            then
-            echo "Hi, How are you ?"
-            fi
+            exitcode=0
+            echo "exitcode=${exitcode}" >> $GITHUB_OUTPUT
+            (( exitcode == 1 )) && exit 1 || exit 0
+        - name: sample
+          run: |
+            echo ${{ steps.plan.outputs.exitcode }}
